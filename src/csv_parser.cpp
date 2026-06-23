@@ -36,14 +36,10 @@ std::vector<Sample> load_csv(const std::string& path) {
         s.sda = (sda_str == "1" || sda_str == "z" || sda_str == "Z");
 
         // DELTA CYCLE FILTER:
-        // If this sample has the exact same timestamp as the previous one,
-        // it means the simulator is evaluating intermediate logic. 
-        // Overwrite the previous state instead of adding a new event.
         if (!samples.empty() && samples.back().time_ns == s.time_ns) {
             samples.back().scl = s.scl;
             samples.back().sda = s.sda;
         } else {
-            // Otherwise, it's a new nanosecond step, so add it to the timeline.
             samples.push_back(s);
         }
     }
